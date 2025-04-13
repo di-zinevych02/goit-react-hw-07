@@ -6,6 +6,7 @@ import App from './App.jsx'
 import { Provider } from 'react-redux'
 import { store } from "./redux/store.js";
 import { persistor } from "./redux/store.js";
+
 //<StrictMode> — інструмент React для перевірки потенційних проблем.
 //<Provider> — робить Redux store доступним для всіх компонентів.
 //для збереження даних  в локальному сховищі браузера використ PersistGate persistor={persistor}

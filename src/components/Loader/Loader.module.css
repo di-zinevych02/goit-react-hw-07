@@ -7,7 +7,7 @@
 .loading {
     display: block;
     margin: 20px auto;
-    border-color: var(--primary-darker);
+    border-color: #9b7dcf;
     animation: pulse 1.5s infinite;
 }
 
