@@ -1,10 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from "yup";
 import css from "./ContactForm.module.css";
-import { addContact } from "../../redux/contactsSlice"
+import { addContact } from "../../redux/contactsOps"
 import { useDispatch } from 'react-redux';
-import { nanoid } from 'nanoid';
-import { useId } from 'react';
 const initialValues = {
     name: "", 
     number: ""
@@ -16,12 +14,11 @@ const initialValues = {
 
 const ContactForm = () => {
     const dispatch = useDispatch();
-    const fieldId = useId();
+
     //Функція handleSubmit реалізована для обробки подання форми, включаючи додавання нового контакту та скидання форми.
     const handleSubmit= (values, actions) => {
         dispatch(
             addContact({
-                id: nanoid(),
                 name: values.name,
                 number: values.number,
             })
@@ -38,13 +35,13 @@ const ContactForm = () => {
         >
             <Form className={css.form}>
                 <div className={css.group}>
-                    <label className={css.label} htmlFor={'${fieldId}-name'}>Name</label>
+                    <label className={css.label}>Name</label>
                     <Field className={css.input} type="text" name="name" id={'${fieldId}-name'}/>
                     <ErrorMessage className={css.error} name="name" component="span"/>
                 </div>
 
                 <div className={css.group}>
-                    <label className={css.label} htmlFor={'${fieldId}-number'}>Number</label>
+                    <label className={css.label}>Number</label>
                     <Field className={css.input} type="text" name="number" id={'${fieldId}-number'}/>
                     <ErrorMessage className={css.error} name="number" component="span"/>
                 </div>

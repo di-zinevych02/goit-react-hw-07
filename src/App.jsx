@@ -3,51 +3,36 @@ import ContactList from "./components/ContactList/ContactList";
 import css from "./App.module.css";
 import SearchBox from "./components/SearchBox/SearchBox";
 import ContactForm from "./components/ContactForm/ContactForm";
-
+import Loader from "./components/Loader/Loader";
+import Error from "./components/Error/Error";
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchContacts } from './redux/contactsOps';
+import { selectContacts, selectIsLoading, selectIsError } from './redux/contactsSlice';
 
 export default function App() {
-//   //Стан зберігається у памяті вкладці браузера
-//   const [contacts, setContacts] = useState(() => {
-//     // Зчитуємо значення за ключем
-//     const savedContacts = localStorage.getItem("contacts");
-//     // якщо там щось є, парсимо та повертаємо значення стану або повертаємо значення за замовч
-//     return savedContacts ? JSON.parse(savedContacts) : initialContacts;
-//   });
+  // Використовується useSelector для отримання значення властивостей з Redux-стану.
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const isError = useSelector(selectIsError);
 
-// // Зберігаємо в локальне сховище контакти між перезавантаженнями сторінки, при умові якщо масив не порожній (Це зроблено, щоб уникнути збереження порожнього масиву при першому завантаженні)
-//   useEffect(()=> {
-//     if (contacts.length > 0) {
-//     localStorage.setItem("contacts", JSON.stringify(contacts));
-//   }
-//   // Ефект буде виконуватись вище кожного разу тільки тоді, коли змінюється стан контакс
-//  }, [contacts]);
+  const dispatch = useDispatch();
+  //коли ми диспатчимо операцію у нас викликається асинхронна функція 
+  //робимо запит за даними
+  //фетчимо дані до того, як завантажиться ContactList
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
-//   const [search, setSearch] = useState("");
-// //Функція зміни стану
-//   const addContacts = (newContacts) => {
-//     //Буде викликана реактом під капотом і отримає обовґязковий один аргумент, обявляємо параметр, що буде поточне значення стану contacts на момент оновлення
-//     setContacts((prevContacts) => {
-//     //Розпилюємо попередні контакти і додаємо нові контакти
-//       return [...prevContacts, newContacts];
-//     });
-//   };
-// //
-//   const deleteContacts = (contactId) => {
-//     //Використовуємо функіональну форму сетеру, повертає новий стан,
-//     setContacts(prevContacts => {
-//       //Відфільтрує масив, якщо індентифікатор співпаде це означатиме що той елемент, котрий потрібно видалити і не піде в новий масив
-//       return prevContacts.filter((contact) => contact.id !== contactId);
-//     });
-//   };
-//   //При кожному оновленні двох станів(contacts or search) буде відфільтровуватись значення
-//   const visibleContacts = contacts.filter((contact) => contact.name.toLowerCase().includes(search.toLowerCase())
-// );
+
   return (
     <div className={css.maincontainer}>
       <h1 className={css.headtitile}>Phonebook</h1>
       <ContactForm />
       <SearchBox />
-      <ContactList />
+      {isLoading && <Loader />}
+      {isError && <Error />}
+      {contacts.length > 0 && <ContactList />}
     </div>
   );
 }

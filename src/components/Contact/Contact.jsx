@@ -3,7 +3,7 @@ import { CgProfile } from "react-icons/cg";
 import { BsTelephoneFill } from "react-icons/bs";
 import { MdClose } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
-import {deleteContact} from "../../redux/contactsSlice"
+import {deleteContact} from "../../redux/contactsOps"
 const Contact = ({data}) => {
     //повертає посилання на функцію надсилання екшенів, для того щоб сповістити що в інтерфейсі відбулась подія
     const dispatch = useDispatch();
